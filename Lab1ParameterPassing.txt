@@ -1,0 +1,454 @@
+LABORATORY 1 (实验1)
+
+Pass it on
+参数的传递
+       
+
+Objective(实验目的)
+This week in the lab we will be examining parameter passing. Understanding parameterized functions will enable you to design functions that correctly compute and return values to your program. Misuse of parameters is a common problem among programmers—a problem that often results in unexpected errors.
+    本实验让我们体验函数参数的传递方式。正确理解和使用函数参数对编写具有高效率和高可靠性的函数十分重要。常常由于程序员不恰当的函数参数设计，使程序变得不好调试和容易出错。
+
+Key Concepts (相关概念)
+_ Programmer-defined functions （程序员定义的函数）
+_ Invocation and flow of control （函数的调用执行过程）
+_ Value parameters （值参数 – 按值传递的参数）
+_ Reference parameters （引用参数 – 按引用传递的参数）
+_ const parameters （常量参数 – 参数定义前有const关键字的参数）
+_ return statement （return语句）
+_ Local objects （局部对象）
+
+GETTING STARTED (准备开始)
+Up to this point your experience with functions has been fairly limited. However, you should not underestimate their usefulness in imposing logical structure upon programs. An important part of using functions entails the understanding of parameters. Parameters enable functions to be flexible. With parameters a single function can handle a variety of related tasks—the parameters
+will determine which tasks to do and which values to compute. Parameters have this important role because they are the primary interface between the function to be invoked and the calling program fragment. Parameters enable programmers to control the values or objects that pass in and out of a function. Without parameters, we would be forced to rely on global objects as the sole
+means of communicating values between the various functions. However, we know that using global objects to share information is hazardous. Global objects make programs hard to trace and debug, since changing one global object could have ramifications throughout many different functions. Programs whose functions use parameters to share information are more modular and are easier to understand.
+For each of the problems in this laboratory, perform the following activities with your group.
+1. Read the program, but do not run it!
+2. Trace through it by hand and determine what the results of the program will be.
+3. Whenever you are asked to explain or describe something, write down your answers in the space provided.
+4. Discuss your results with your group and come to a consensus on the answer. When you have reached a consensus, then open the file containing that program and run it. 
+5. If your answer disagrees with the results produced when you ran the program, go back and see why your answer was incorrect. If you cannot figure out a problem, ask a laboratory instructor for assistance. Remember to get a check-off for each solution.
+    Helpful Hint: When you try to trace parameters by hand, it is useful to draw boxes for each object and then write the current value in the box. This method enables you to see what is going on with each parameter. It also enables you to cross out an old value and replace it with a new one every time an object is updated.
+
+到目前为止，你编写函数的经验可以说是相当有限，然而你却不可忽视函数对于加强程序逻辑结构的作用。想要用好函数，理解函数的参数是关键。函数参数可使函数变得很灵活，即恰当的设计函数的参数，就能让一个函数完成多种任务。这时，函数具体做什么事算什么值可由调用者传递的实际参数来决定。函数的参数具有如此重要的作用是因为它们是函数与调用者之间传递信息的主要媒介。程序员还可以通过函数参数来掌控传递进出函数的数值或对象。如果没有函数参数的话，我们就只能被迫使用全局对象这个唯一的手段来完成不同函数之间的通讯了。然而，大家都知道，使用全局对象来共享信息是多么的有害呀！由于修改某一个全局对象会影响到所有与之共享信息的全部函数，因此，全局对象往往会导致程序代码难以跟踪和调试。总之，使用参数在函数间共享信息的程序的模块化程度更高，并且可读性更强。
+请为后面所列的每一个题目，与你的小组成员一起完成以下工作：
+1、每个人独自认真阅读程序，但先不要编译运行它；
+ 2、人工跟踪程序代码的执行过程，并写出你的心算结果；
+ 3、在本实验的留白处，写下你对题目所提问题的解答和说明；
+ 4、 与你的同伴一起讨论你们各自的答案，并使之达成一致意见。然后将程序拷贝到IDE
+    中编译运行；
+5、	如果你们的心算答案与程序的编译运行结果不一致，务必要回头仔细思考为什么。当你实在弄不明白的时候，可以请求试验指导老师的帮助。不要忘了验证每一个答案！
+
+
+FUN WITH PARAMETERS
+
+PROBLEM 1
+#include <iostream>
+using namespace std;
+void MyFunc() {
+    return;
+}
+int main() {
+    int i = 10;
+    int j = 20;
+MyFunc();
+cout << "main: i = " << i << endl;
+    cout << "main: j = " << j << endl;
+    return 0;
+} 
+
+_ What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+main:i=10
+main:j=20
+说明：
+MyFunc();//该函数内什么也没有执行，返回空，继续执行下一行
+
+
+
+
+PROBLEM 2
+#include <iostream>
+using namespace std;
+void MyFunc(int i, int j) {
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+return;
+}
+int main() {
+int i = 10;
+int j = 20;
+MyFunc(i, j);
+cout << "main: i = " << i << endl;
+cout << "main: j = " << j << endl;
+return 0;
+} 
+
+_ What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=10
+MyFunc:j=20
+main:i=10
+main:j=20
+
+说明：
+MyFunc(i,j);//将i,j传入，打印一次
+Main()函数中再打印一次
+
+
+
+PROBLEM 3
+#include <iostream>
+using namespace std;
+void MyFunc(int i, int j) {
+i = i + j;
+j = j + i;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+return;
+}
+int main() {
+int i = 10;
+int j = 20;
+MyFunc(50, j);
+MyFunc(i, 50);
+cout << "main: i = " << i << endl;
+cout << "main: j = " << j << endl;
+return 0;
+}
+
+ _ What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=70
+MyFunc:j=90
+MyFunc:i=60
+MyFunc:j=110
+main:i=10
+main:j=20
+
+说明：
+MyFunc(50,j);//第一个实参传入50，第二个实参传入j的值
+MyFunc(i,50);//第一个实参传入i的值，第二个实参传入50
+由于传入的实参是i,j的备份，所以函数实体中的改变i,j的值不会改变主函数中i,j的值
+
+
+
+
+PROBLEM 4
+#include <iostream>
+using namespace std;
+void MyFunc(int i, int j) {
+int temp;
+temp = i;
+i = j;
+j = temp;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+return;
+}
+int main() {
+int a = 10;
+int b = 20;
+MyFunc(a, b);
+MyFunc(b, a);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+return 0;
+} 
+
+1. What output is produced? 程序的输出结果是?
+MyFunc:i=20
+MyFunc:j=10
+MyFunc:i=10
+MyFunc:j=20
+main:i=10
+main:j=20
+
+2. Why would it be illegal to change the first call of function MyFunc() in the function main() to MyFunc(i, j)? 
+翻译过来即：在主函数main()到函数MyFunc(i,j)中，改变函数MyFunc()的第一次调用是非法的
+
+不理解更改函数MyFunc()第一次调用的含义，怎么更改
+过了半个小时左右，我明白了这句话的含义，这句话说MyFunc(a,b)变成MyFunc(i,j)是非法的，当然是非法的，函数调用传入实参，是主函数中具体的变量，i,j在主函数没有声明定义，当然不能用
+启发来自于第6题第二问
+
+
+
+
+PROBLEM 5
+#include <iostream>
+using namespace std;
+void MyFunc(int &i, int &j) {
+int temp;
+temp = i;
+i = 30;
+j = temp;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+return;
+}
+int main() {
+int a = 10;
+int b = 20;
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+MyFunc(a, b);
+MyFunc(b, a);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+return 0;
+}
+1. What output is produced? 程序的输出结果是?
+人工跟踪代码：
+main:a=10
+main:b=20
+
+MyFunc:i=30
+MyFunc:j=10
+MyFunc:i=30
+MyFunc:j=10
+main:a=10
+main:b=30
+
+说明：
+ 形参为实参的引用：
+MyFunc(int &i,int &j)函数的作用是将第一个参数变为30，第二参数变为第一个参数，然后分别打印出来，关键点在于会改变实参的值，实参的值也是
+第一实参变成30，第二个实参变成的一个实参
+MyFunc(a,b);//运行之后a=30,b=10 
+MyFunc(b,a);//运行之后b=30,a=10
+
+
+
+PROBLEM 6
+#include <iostream>
+using namespace std;
+void MyFunc(int &i, int j) {
+int temp;
+temp = i;
+i = 30;
+j = temp;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+return;
+}
+int main() {
+int a = 10;
+int b = 20;
+MyFunc(a, b);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+return 0;
+}
+
+1. What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=30
+MyFunc:j=10
+main:a=30
+main:b=20
+
+说明：
+ 第一个形参为实参的引用：
+MyFunc(int &i,int j)函数的作用是将第一个参数变为30，第二参数变为第一个参数，然后分别打印出来，关键点在于会改变实参的值，实参的值也是
+第一实参变成30，第二个实参变不改变
+MyFunc(a,b);//运行之后a=30,b不变 
+
+
+
+
+2. Why should it be illegal to change the call of MyFunc() in the function main() to MyFunc(10, b)?
+引用相当于一个变量的别名，首先得是一个变量，具体的数值不能引用。
+
+
+3.  Why should it be legal to change the call of MyFunc() in the function main() to MyFunc(a, 20)?
+第二个形参数不是引用，所以就可以指定将具体数值传给形参
+
+
+PROBLEM 7
+#include <iostream>
+using namespace std;
+int MyFunc(int &i, int j) {
+int temp;
+temp = i;
+i = 40;
+j = temp;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+return j;
+}
+int main() {
+int a = 10;
+int b = 20;
+int c = 30;
+c = MyFunc(b, b);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+cout << "main: c = " << c << endl;
+return 0;
+} 
+
+1. What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=40
+MyFunc:j=20
+main:a=10
+main:b=40
+main:c=20
+
+说明：
+int MyFunc(int &i,int j)函数的作用是将第一个参数变为40，第二参数变为第一个参数，然后分别打印出来，并返回第二个参数，关键点在于会改变实参的值
+这里传入两个b,虽然形参只有一个引用，但只有对应的引用发送变化，b也会变化，函数的返回值只跟传入的第一个实参有关
+
+
+
+
+
+PROBLEM 8
+#include <iostream>
+using namespace std;
+void MyFunc(int &i, int j, int k) {
+int a = 100;
+int b = 200;
+i = k + a;
+j = k + i;
+k = a;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+cout << "MyFunc: k = " << k << endl;
+cout << "MyFunc: a = " << a << endl;
+cout << "MyFunc: b = " << b << endl;
+return;
+}
+int main() {
+int a = 10;
+int b = 20;
+MyFunc(b, a, b);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+return 0;
+} 
+
+1. What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=120
+MyFunc:j=140
+MyFunc:k=100
+MyFunc:a=100
+MyFunc:b=200
+main:a=10
+main:b=120
+
+说明：
+void MyFunc(int &i, int j, int k)函数的作用会改变第一实参的值
+
+
+
+
+
+
+PROBLEM 9
+#include <iostream>
+using namespace std;
+void MyFunc(const int i, int &j) {
+int a = 100;
+int b = 200;
+a = b + j;
+j = i + a;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+cout << "MyFunc: a = " << a << endl;
+cout << "MyFunc: b = " << b << endl;
+return;
+}
+int main() {
+int a = 10;
+int b = 20;
+MyFunc(b, a);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+return 0;
+}
+
+1. What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=20
+MyFunc:j=230
+MyFunc:a=210
+MyFunc:b=200
+main:a=230
+main:b=20
+
+说明：
+void MyFunc(int &i, int j, int k)函数的作用会改变第二实参的值，第一个形参i是常量，不能改变
+
+
+
+
+
+
+
+2. Why would it be illegal to add the statement i = a + b; to the function MyFunc()?
+第一个形参i是常量，不能改变
+
+
+
+PROBLEM 10
+#include <iostream>
+using namespace std;
+void MyFunc(int i, int j = 50) {
+int a = 100;
+int b = 200;
+i = i + j + a + b;
+cout << "MyFunc: i = " << i << endl;
+cout << "MyFunc: j = " << j << endl;
+cout << "MyFunc: a = " << a << endl;
+cout << "MyFunc: b = " << b << endl;
+return;
+}
+int main() {
+int a = 10;
+int b = 20;
+int c = 30;
+MyFunc(a, b);
+MyFunc(c);
+MyFunc(0);
+cout << "main: a = " << a << endl;
+cout << "main: b = " << b << endl;
+cout << "main: c = " << c << endl;
+return 0;
+} 
+
+1. What output is produced? 程序的输出结果是?
+
+人工跟踪代码：
+MyFunc:i=330
+MyFunc:j=20
+MyFunc:a=100
+MyFunc:b=200
+MyFunc:i=380
+MyFunc:j=50
+MyFunc:a=100
+MyFunc:b=200
+MyFunc:i=350
+MyFunc:j=50
+MyFunc:a=100
+MyFunc:b=200
+main:a=10
+main:b=20
+main:b=30
+
+
+说明：
+void MyFunc(int i, int j = 50)函数，第二个形参已经有默认，函数调用的时候只传一个参数就可以，传两个参数时，第二个参数，函数调用会以传入值为准
+
+
+
+FINISHING UP
+_ Copy any files you wish to keep to your own drive.
+_ Hand in your check-off sheet.
+
